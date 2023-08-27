@@ -1,7 +1,19 @@
+import { signOut } from "firebase/auth";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
 
 function Header() {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.User.email);
+
+  const logOut = async (event) => {
+    event.preventDefault();
+    await signOut(auth);
+    navigate("/");
+  };
+
   const date = new Date();
   const year = date.getFullYear();
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -12,9 +24,21 @@ function Header() {
   return (
     <>
       <div>{dateStr}</div>
-      <Link to="/login">로그인</Link>
-      <div></div>
-      <Link to="/signup">회원가입</Link>
+
+      {/* 유저가 있을 때 ? 로그아웃 부분 보여주기 : 로그인 부분 보여주기 */}
+      {user ? (
+        <>
+          <button onClick={logOut}>로그아웃</button>
+          <br />
+          <Link to="/mypage">마이페이지</Link>
+        </>
+      ) : (
+        <>
+          <Link to="/login">로그인</Link>
+          <br />
+          <Link to="/signup">회원가입</Link>
+        </>
+      )}
     </>
   );
 }

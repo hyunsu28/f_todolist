@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 
 function Start() {
+  const user = useSelector((state) => state.User.email);
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 추적
 
   const handleEnter = () => {
-    if (isLoggedIn) {
+    if (user) {
       navigate("/main");
     } else {
       alert("로그인이 필요합니다.");

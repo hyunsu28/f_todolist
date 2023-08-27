@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function Main() {
-  const lists = useSelector((state) => state.list);
+  const lists = useSelector((state) => state.List);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
