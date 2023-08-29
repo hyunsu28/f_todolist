@@ -9,7 +9,7 @@ const user = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.email = action.payload.email;
-      // state.id = action.payload.id
+      state.id = action.payload.id;
       // state: user의 상태 = 초기값
       // action.payload => setUser(newUser)
     },
