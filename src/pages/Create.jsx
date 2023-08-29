@@ -1,10 +1,63 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 import { addPost } from "../redux/modules/postSlice";
 import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import { db } from "../firebase";
+import Header from "../common/Header";
+import styled from "styled-components";
+
+const All = styled.div`
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #c5dff8;
+  font-family: "Rubik", sans-serif;
+  min-height: 772px;
+`;
+
+const Second = styled.div`
+  margin: 40px auto;
+  background-color: #ffffff;
+  width: 700px;
+  height: 600px;
+  font-size: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & > h3 {
+    margin-left: 70px;
+    margin-bottom: 10px;
+    font-size: 25px;
+    align-self: flex-start;
+  }
+  & input {
+    height: 130px;
+    width: 550px;
+    border: 5px solid #375c9f;
+    border-radius: 7px;
+    font-size: 25px;
+    margin-bottom: 10px;
+  }
+`;
+const But = styled.div`
+  & button {
+    margin-right: 20px;
+    width: 100px;
+    height: 35px;
+    font-size: 20px;
+    border: none;
+    border-radius: 7px;
+    background-color: #6b84b4;
+    color: white;
+  }
+`;
 
 function Create() {
   const dispatch = useDispatch();
@@ -27,8 +80,8 @@ function Create() {
       title: title,
       content: content,
     };
-    dispatch(addPost(newPost)); // Redux action을 통해 데이터를 추가합니다.
-    navigate("/main"); // 메인 페이지로 이동합니다.
+    dispatch(addPost(newPost));
+    navigate("/main");
   };
 
   const user = useSelector((state) => state.User);
@@ -42,33 +95,45 @@ function Create() {
       isDone: false,
     };
 
-    // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
     const collectionRef = collection(db, "todos");
-    // 'todos' 컬렉션에 newTodo 문서를 추가합니다.
     await addDoc(collectionRef, newTodo);
     navigate("/main");
   };
 
   return (
     <>
-      <div>
-        <input
-          placeholder="제목"
-          type="text"
-          value={title}
-          onChange={onTitleChangeHandler}
-        />
-      </div>
-      <div>
-        <input
-          placeholder="내용"
-          type="text"
-          value={content}
-          onChange={onContentChangeHandler}
-        />
-      </div>
+      <Header />
+      <All>
+        <Second>
+          <h3>Title</h3>
 
-      <button onClick={addTodo}>Write</button>
+          <input
+            type="text"
+            value={title}
+            onChange={onTitleChangeHandler}
+            style={{
+              textAlign: "center",
+            }}
+            placeholder="Write the title"
+          />
+
+          <br />
+          <h3>Content</h3>
+
+          <input
+            type="text"
+            value={content}
+            onChange={onContentChangeHandler}
+            style={{
+              textAlign: "center",
+            }}
+            placeholder="Write the content"
+          />
+        </Second>
+        <But>
+          <button onClick={addTodo}>Write</button>
+        </But>
+      </All>
     </>
   );
 }

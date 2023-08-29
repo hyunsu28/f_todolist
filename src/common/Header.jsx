@@ -10,16 +10,15 @@ import homelogo from "../homelogo.png";
 const HeaderWrapper = styled.div`
   color: white;
   width: 100%;
-  padding: 0 20px; /* 좌우 여백 추가 */
+  padding: 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 10px 0; /* 상하 여백은 유지하되 좌우 여백 삭제 */
 
-  height: 5vh;
-  background-color: #466f48;
+  height: 7vh;
+  background-color: #7895cb;
   font-family: "Rubik", sans-serif;
 `;
 const D = styled.div`
@@ -28,9 +27,10 @@ const D = styled.div`
 
 const Links = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 15px;
   align-items: center;
   font-size: 15px;
+  cursor: pointer;
   a {
     color: white;
     text-decoration: none; /* 링크의 밑줄 제거 */
@@ -39,7 +39,7 @@ const Links = styled.div`
 
 const Logo = styled.div`
   img {
-    width: 85px;
+    width: 80px;
     height: auto;
   }
 
@@ -60,7 +60,7 @@ function Header() {
   const year = date.getFullYear();
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
   const day = ("0" + date.getDate()).slice(-2);
-  const dateStr = `${year}-${month}-${day}`;
+  const dateStr = `Today ${year}.${month}.${day}`;
   // 어떤 날짜여도 'YYYY-DD-YY'형식으로 변환!
 
   return (
@@ -70,20 +70,20 @@ function Header() {
           <p>{dateStr}</p>
         </D>
         <Logo>
-          <img src={homelogo} />{" "}
+          <Link to="/main">
+            <img src={homelogo} />
+          </Link>
         </Logo>
 
         <Links>
-          {/* 유저가 있을 때 ? 로그아웃 부분 보여주기 : 로그인 부분 보여주기 */}
           {user ? (
             <>
-              <p onClick={logOut}>로그아웃</p>
-              <Link to="/mypage">마이페이지</Link>
+              <p onClick={logOut}>Logout</p>
             </>
           ) : (
             <>
-              <Link to="/login">로그인</Link>
-              <Link to="/signup">회원가입</Link>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Signup</Link>
             </>
           )}
         </Links>

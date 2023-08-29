@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../common/Header";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-// import { deletePost, updatePost } from "../redux/modules/postSlice";
 import styled from "styled-components";
 import { collection, getDocs, query, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -10,84 +9,107 @@ import { deleteDoc, doc } from "firebase/firestore";
 
 const All = styled.div`
   width: 100%;
-  max-width: 1000px;
+  max-width: 1220px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background-color: #c8e4b2;
+  background-color: #c5dff8;
   font-family: "Rubik", sans-serif;
-  min-height: 769px;
+  min-height: 772px;
+`;
+const HeaderText = styled.h2`
+  color: ${(props) => (props.active ? "black" : "white")};
+  cursor: pointer;
 `;
 
 const List = styled.div`
-  text-align: center;
-`;
+  display: flex;
+  margin-left: 45px;
+  align-items: flex-start;
 
+  gap: 70px;
+`;
+const ListContainer = styled.div`
+  margin-left: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: flex-start;
+`;
 const List1 = styled.div`
+  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 20px;
-  width: 280px;
-  padding: 25px;
-  margin: 20px 20px;
-  border: 5px solid #3c6430;
+  width: 270px;
+  height: 150px;
+  padding: 0 0 20px 0;
+  margin: 10px 15px;
+  border: 3px solid #bdb017;
+  background-color: #f5f5c3;
   border-radius: 20px;
+`;
+const Butset = styled.div`
+  & button {
+    margin-top: 15px;
+    margin-right: 10px;
+    width: 60px;
+    height: 25px;
+    font-size: 15px;
+    border: 2px solid #dbc451;
+    border-radius: 7px;
+    background-color: #dbc451;
+    color: white;
+  }
+`;
+const Font1 = styled.div`
   font-size: 20px;
+  text-align: center;
+`;
+const Font2 = styled.div`
+  font-size: 15px;
+  text-align: center;
+`;
+const But = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  & button {
+    margin-right: 10px;
+    width: 100px;
+    height: 37px;
+    font-size: 20px;
+    border: 2px solid #dbc451;
+    border-radius: 7px;
+    background-color: #dbc451;
+    color: white;
+  }
 `;
 
 function Main() {
   const user = useSelector((state) => state.User);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  // const handleDelete = (id) => {
-  //   if (window.confirm("삭제할까?")) {
-  //     dispatch(deletePost(id));
-  //   }
-  // };
-
-  // const toggleComplete = (id) => {
-  //   const targetTodo = lists.find((C) => C.id === id);
-
-  //   const updatedTodo = { ...targetTodo, isDone: !targetTodo.isDone };
-
-  //   dispatch(updatePost(updatedTodo));
-  //   console.log(updatedTodo);
-  // };
-
   // todos 데이터 불러오기
   const [lists, setLists] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      // collection 이름이 todos인 collection의 모든 document를 가져옵니다.
       const q = query(collection(db, "todos"));
       const querySnapshot = await getDocs(q);
 
       const initialTodos = [];
-
-      // document의 id와 데이터를 initialTodos에 저장합니다.
-      // doc.id의 경우 따로 지정하지 않는 한 자동으로 생성되는 id입니다.
-      // doc.data()를 실행하면 해당 document의 데이터를 가져올 수 있습니다.
       querySnapshot.forEach((doc) => {
         initialTodos.push({ id: doc.id, ...doc.data() });
       });
 
-      console.log(initialTodos);
-
-      // firestore에서 가져온 데이터를 state에 전달
       setLists(initialTodos);
     };
 
     fetchData();
   }, []);
 
-  console.log(lists);
-
-  // [리스트 상태, set리스트 상태] = useState()
   const [todolist, setTodolist] = useState(true);
 
   const deleteTodo = async (id) => {
@@ -111,7 +133,7 @@ function Main() {
 
       setLists(updatedLists);
     } catch (error) {
-      console.error("데이터를 업데이트하는 데 실패했습니다.", error);
+      console.error("Data update failed.", error);
     }
   };
 
@@ -122,72 +144,88 @@ function Main() {
       <Header />
       <All>
         <List>
-          <button onClick={() => setTodolist(true)}>할일</button>
-          <button onClick={() => setTodolist(false)}>한일</button>
+          <HeaderText active={todolist} onClick={() => setTodolist(true)}>
+            Working
+          </HeaderText>
+          <HeaderText active={!todolist} onClick={() => setTodolist(false)}>
+            Done
+          </HeaderText>
         </List>
+        <ListContainer>
+          {todolist
+            ? data
+                .filter((A) => A.isDone == false)
+                .map((A) => {
+                  return (
+                    <List1 key={A.id}>
+                      <div>
+                        <Font1>
+                          <h4>{A.title}</h4>
+                        </Font1>
+                        <Font2>
+                          <p>{A.content}</p>
+                        </Font2>
+                        <Butset>
+                          <button
+                            onClick={() => {
+                              deleteTodo(A.id);
+                            }}
+                          >
+                            Delete
+                          </button>
+                          <Link to={`/edit/${A.id}`}>
+                            <button>Edit</button>
+                          </Link>
+                          <button
+                            onClick={() => {
+                              finishTodo(A.id);
+                            }}
+                          >
+                            Finish
+                          </button>
+                        </Butset>
+                      </div>
+                    </List1>
+                  );
+                })
+            : data
+                .filter((B) => B.isDone !== false)
+                .map((B) => {
+                  return (
+                    <List1 key={B.id}>
+                      <div>
+                        <h4>{B.title}</h4>
+                        <p>{B.content}</p>
+                        <Butset>
+                          <button
+                            onClick={() => {
+                              deleteTodo(B.id);
+                            }}
+                          >
+                            Delete
+                          </button>
+                          <Link to={`/edit/${B.id}`}>
+                            <button>Edit</button>
+                          </Link>
+                          <button
+                            onClick={() => {
+                              finishTodo(B.id);
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </Butset>
+                      </div>
+                    </List1>
+                  );
+                })}
+        </ListContainer>
 
-        {todolist
-          ? data
-              .filter((A) => A.isDone == false)
-              .map((A) => {
-                return (
-                  <List1 key={A.id}>
-                    <div>
-                      <h2>{A.title}</h2>
-                      <p>{A.content}</p>
-                      <button
-                        onClick={() => {
-                          deleteTodo(A.id);
-                        }}
-                      >
-                        Delete
-                      </button>
-                      <Link to={`/edit/${A.id}`}>
-                        <button>Edit</button>
-                      </Link>
-                      <button
-                        onClick={() => {
-                          finishTodo(A.id);
-                        }}
-                      >
-                        Finish
-                      </button>
-                    </div>
-                  </List1>
-                );
-              })
-          : data
-              .filter((B) => B.isDone !== false)
-              .map((B) => {
-                return (
-                  <List1 key={B.id}>
-                    <div>
-                      <h2>{B.title}</h2>
-                      <p>{B.content}</p>
-                      <button
-                        onClick={() => {
-                          deleteTodo(B.id);
-                        }}
-                      >
-                        Delete
-                      </button>
-                      <Link to={`/edit/${B.id}`}>
-                        <button>Edit</button>
-                      </Link>
-                      <button
-                        onClick={() => {
-                          finishTodo(B.id);
-                        }}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </List1>
-                );
-              })}
-        <Link to="/create">
-          <button>작성하기</button>
-        </Link>
+        <But>
+          <Link to="/create">
+            <button>Write</button>
+          </Link>
+        </But>
       </All>
     </>
   );

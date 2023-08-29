@@ -3,6 +3,80 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import ringlogo from "../ringlogo.png";
+import Header from "../common/Header";
+import styled from "styled-components";
+
+const All = styled.div`
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #c5dff8;
+  font-family: "Rubik", sans-serif;
+  min-height: 772px;
+`;
+const Ringlogo = styled.div`
+  margin: -60px auto 0; /* 로고를 더 위로 올리기 위해 마진 조정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 300px;
+    height: 200px;
+  }
+`;
+
+const Second = styled.div`
+  margin: 40px auto;
+  background-color: #ffffff;
+  width: 700px;
+  height: 600px;
+  font-size: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & > h5 {
+    margin-top: 15px;
+    margin-left: 70px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    align-self: flex-start;
+  }
+  & input {
+    height: 40px;
+    width: 550px;
+    border: 4px solid #375c9f;
+    border-radius: 7px;
+    font-size: 25px;
+    margin-bottom: 30px;
+  }
+`;
+
+const Erm = styled.div`
+  font-size: 20px;
+  margin-top: -30px;
+  margin-bottom: 40px;
+`;
+
+const But = styled.div`
+  margin-top: 20px;
+  & button {
+    margin-right: 20px;
+    width: 100px;
+    height: 35px;
+    font-size: 20px;
+    border: none;
+    border-radius: 7px;
+    background-color: #6b84b4;
+    color: white;
+  }
+`;
 
 function Login() {
   const navigate = useNavigate();
@@ -33,42 +107,48 @@ function Login() {
         email,
         password
       );
-      console.log(userCredential);
       setLoginSuccess(true);
       navigate("/");
     } catch (error) {
-      console.error(error);
-      // 추가: 로그인 실패 시 에러 메시지 업데이트
-      setLoginError("아이디 또는 비밀번호가 일치하지 않습니다.");
+      setLoginError("Your id or password is incorrect.");
     }
   };
 
   return (
     <>
-      <Link to="/signup">회원가입</Link>
-      <div>로고</div>
-      <label>이메일 : </label>
-      <input
-        type="email"
-        value={email}
-        name="email"
-        onChange={onChange}
-        required
-      />
+      <Header />
+      <All>
+        <Second>
+          <Ringlogo>
+            <img src={ringlogo} />
+          </Ringlogo>
+          <h5>ID</h5>
+          <input
+            type="email"
+            value={email}
+            name="email"
+            onChange={onChange}
+            required
+          />
 
-      <label>비밀번호 : </label>
-      <input
-        type="password"
-        value={password}
-        name="password"
-        onChange={onChange}
-        required
-      />
+          <h5>PASSWORD</h5>
+          <input
+            type="password"
+            value={password}
+            name="password"
+            onChange={onChange}
+            required
+          />
 
-      <button onClick={signIn}>로그인</button>
-
-      {/* 추가: 로그인 에러 메시지 표시 */}
-      {loginError && <div style={{ color: "red" }}>{loginError}</div>}
+          <Erm>
+            {" "}
+            {loginError && <div style={{ color: "red" }}>{loginError}</div>}
+          </Erm>
+          <But>
+            <button onClick={signIn}>Login</button>
+          </But>
+        </Second>
+      </All>
     </>
   );
 }

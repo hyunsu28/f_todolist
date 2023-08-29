@@ -3,18 +3,58 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import Header from "../common/Header";
 
 const All = styled.div`
   width: 100%;
-  max-width: 1000px;
+  max-width: 1220px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #c8e4b2;
-  font-family: "Jost", sans-serif;
-  min-height: 769px;
+  background-color: #c5dff8;
+  font-family: "Rubik", sans-serif;
+  min-height: 772px;
+`;
+const Second = styled.div`
+  margin: 40px auto;
+  background-color: #ffffff;
+  width: 700px;
+  height: 600px;
+  font-size: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & > h3 {
+    margin-left: 70px;
+    margin-bottom: 10px;
+    font-size: 25px;
+    align-self: flex-start;
+  }
+  & input {
+    height: 130px;
+    width: 550px;
+    border: 5px solid #375c9f;
+    border-radius: 7px;
+    font-size: 25px;
+    margin-bottom: 10px;
+  }
+`;
+
+const Butset = styled.div`
+  margin-top: 20px;
+  & button {
+    margin-right: 20px;
+    width: 100px;
+    height: 35px;
+    font-size: 20px;
+    border: none;
+    border-radius: 7px;
+    background-color: #6b84b4;
+    color: white;
+  }
 `;
 
 function Edit() {
@@ -36,14 +76,14 @@ function Edit() {
 
         if (docSnapshot.exists()) {
           const data = { id: docSnapshot.id, ...docSnapshot.data() };
-          setList(data); // list 변수 초기화
-          setEditTitle(data.title); // editTitle 초기화
-          setEditContent(data.content); // editContent 초기화
+          setList(data);
+          setEditTitle(data.title);
+          setEditContent(data.content);
         } else {
-          console.log("해당 ID에 대한 데이터가 존재하지 않습니다.");
+          console.log("There is no data for that ID.");
         }
       } catch (error) {
-        console.error("데이터를 불러오는 데 실패했습니다.", error);
+        console.error("Failed to import data", error);
       }
     };
 
@@ -58,31 +98,46 @@ function Edit() {
         content: editContent,
       });
 
-      navigate("/main"); // 수정 후 메인 페이지로 이동
+      navigate("/main");
     } catch (error) {
-      console.error("데이터를 업데이트하는 데 실패했습니다.", error);
+      console.error("Data update failed.", error);
     }
   };
 
   return (
     <>
+      <Header />
       <All>
-        <input
-          placeholder="제목"
-          value={editTitle}
-          onChange={(e) => {
-            setEditTitle(e.target.value);
-          }}
-        />
-        <input
-          placeholder="내용"
-          value={editContent}
-          onChange={(e) => {
-            setEditContent(e.target.value);
-          }}
-        />
-        <button onClick={updateTodo}>Edit</button>
-        <Link to="/main">취소</Link>{" "}
+        <Second>
+          <h3>Change to title</h3>
+          <input
+            style={{
+              textAlign: "center",
+            }}
+            placeholder="Edit title"
+            value={editTitle}
+            onChange={(e) => {
+              setEditTitle(e.target.value);
+            }}
+          />
+          <h3>Change to content</h3>
+          <input
+            style={{
+              textAlign: "center",
+            }}
+            placeholder="Edit content"
+            value={editContent}
+            onChange={(e) => {
+              setEditContent(e.target.value);
+            }}
+          />
+          <Butset>
+            <button onClick={updateTodo}>Edit</button>
+            <Link to="/main">
+              <button>Home</button>
+            </Link>{" "}
+          </Butset>
+        </Second>
       </All>
     </>
   );
