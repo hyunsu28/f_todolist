@@ -113,6 +113,11 @@ function Main() {
   const [todolist, setTodolist] = useState(true);
 
   const deleteTodo = async (id) => {
+    const shouldDelete = window.confirm("Would you like to delete it?");
+    if (!shouldDelete) {
+      return;
+    }
+
     const todoRef = doc(db, "todos", id);
     await deleteDoc(todoRef);
 
@@ -120,7 +125,6 @@ function Main() {
       return prev.filter((element) => element.id !== id);
     });
   };
-
   const finishTodo = async (id) => {
     try {
       const todoRef = doc(db, "todos", id);
