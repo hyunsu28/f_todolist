@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 import { addPost } from "../redux/modules/postSlice";
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import Header from "../common/Header";
 import styled from "styled-components";
@@ -46,7 +46,8 @@ const Second = styled.div`
     margin-bottom: 10px;
   }
 `;
-const But = styled.div`
+const Butset = styled.div`
+  margin-top: 20px;
   & button {
     margin-right: 20px;
     width: 100px;
@@ -106,7 +107,6 @@ function Create() {
       <All>
         <Second>
           <h3>Title</h3>
-
           <input
             type="text"
             value={title}
@@ -116,10 +116,8 @@ function Create() {
             }}
             placeholder="Write the title"
           />
-
           <br />
           <h3>Content</h3>
-
           <input
             type="text"
             value={content}
@@ -129,10 +127,13 @@ function Create() {
             }}
             placeholder="Write the content"
           />
+          <Butset>
+            <button onClick={addTodo}>Write</button>
+            <Link to="/main">
+              <button>Home</button>
+            </Link>{" "}
+          </Butset>{" "}
         </Second>
-        <But>
-          <button onClick={addTodo}>Write</button>
-        </But>
       </All>
     </>
   );

@@ -44,7 +44,7 @@ const List1 = styled.div`
   justify-content: space-between;
   gap: 20px;
   width: 270px;
-  height: 150px;
+  /* height: 150px; */
   padding: 0 0 20px 0;
   margin: 10px 15px;
   border: 3px solid #bdb017;
