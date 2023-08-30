@@ -16,7 +16,7 @@ const All = styled.div`
   justify-content: center;
   background-color: #c5dff8;
   font-family: "Rubik", sans-serif;
-  min-height: 772px;
+  min-height: 687px;
 `;
 const HeaderText = styled.h2`
   color: ${(props) => (props.active ? "black" : "white")};
@@ -44,7 +44,6 @@ const List1 = styled.div`
   justify-content: space-between;
   gap: 20px;
   width: 270px;
-  /* height: 150px; */
   padding: 0 0 20px 0;
   margin: 10px 15px;
   border: 3px solid #bdb017;

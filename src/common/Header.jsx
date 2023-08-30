@@ -17,7 +17,7 @@ const HeaderWrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
 
-  height: 7vh;
+  height: 60px;
   background-color: #7895cb;
   font-family: "Rubik", sans-serif;
 `;
