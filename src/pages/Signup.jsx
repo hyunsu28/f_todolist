@@ -16,7 +16,7 @@ const All = styled.div`
   align-items: center;
   background-color: #c5dff8;
   font-family: "Rubik", sans-serif;
-  min-height: 772px;
+  min-height: 687px;
 `;
 
 const Ringlogo = styled.div`
@@ -35,7 +35,7 @@ const Second = styled.div`
   margin: 40px auto;
   background-color: #ffffff;
   width: 700px;
-  height: 600px;
+  height: 580px;
   font-size: 25px;
   display: flex;
   flex-direction: column;

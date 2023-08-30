@@ -15,7 +15,7 @@ const All = styled.div`
   align-items: center;
   background-color: #c5dff8;
   font-family: "Rubik", sans-serif;
-  min-height: 772px;
+  min-height: 687px;
 `;
 
 const EnterButton = styled.button`
