@@ -61,7 +61,6 @@ function Header() {
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
   const day = ("0" + date.getDate()).slice(-2);
   const dateStr = `Today ${year}.${month}.${day}`;
-  // 어떤 날짜여도 'YYYY-DD-YY'형식으로 변환!
   const handleEnter = () => {
     if (user) {
       navigate("/main ");
