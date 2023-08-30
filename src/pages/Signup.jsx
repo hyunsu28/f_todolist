@@ -1,7 +1,80 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
+import ringlogo from "../ringlogo.png";
+import Header from "../common/Header";
+import styled from "styled-components";
+
+const All = styled.div`
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #c5dff8;
+  font-family: "Rubik", sans-serif;
+  min-height: 772px;
+`;
+
+const Ringlogo = styled.div`
+  margin: -40px auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 300px;
+    height: 200px;
+  }
+`;
+
+const Second = styled.div`
+  margin: 40px auto;
+  background-color: #ffffff;
+  width: 700px;
+  height: 600px;
+  font-size: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & > h5 {
+    margin-top: 15px;
+    margin-left: 70px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    align-self: flex-start;
+  }
+  & input {
+    height: 40px;
+    width: 550px;
+    border: 4px solid #375c9f;
+    border-radius: 7px;
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+`;
+const Erm = styled.div`
+  font-size: 20px;
+  margin-top: -18px;
+  margin-bottom: 40px;
+`;
+const But = styled.div`
+  margin-top: -20px;
+  & button {
+    margin-right: 20px;
+    width: 100px;
+    height: 35px;
+    font-size: 20px;
+    border: none;
+    border-radius: 7px;
+    background-color: #6b84b4;
+    color: white;
+  }
+`;
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -9,10 +82,12 @@ function Signup() {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isSignUpSuccess) {
-      alert("가입이 완료되었습니다.");
+      alert("Welcome to RingRing! Signup successful");
+      navigate("/login");
       setEmail("");
       setPassword("");
       setPasswordCheck("");
@@ -31,7 +106,7 @@ function Signup() {
     }
     if (name === "passwordCheck") {
       setPasswordCheck(value);
-      setPasswordError(password !== value); // 비밀번호 일치 여부 업데이트
+      setPasswordError(password !== value);
     }
   };
 
@@ -53,44 +128,69 @@ function Signup() {
 
   return (
     <>
-      <Link to="/login">로그인</Link>
-      <div>로고</div>
-      <label>이메일 : </label>
-      <input
-        type="email"
-        value={email}
-        name="email"
-        onChange={onChange}
-        required
-      />
+      <Header />
+      <All>
+        <Second>
+          <Ringlogo>
+            <img src={ringlogo} />
+          </Ringlogo>
+          <h5>ID</h5>
+          <input
+            style={{
+              fontSize: "17px",
+              textAlign: "center",
+            }}
+            placeholder="Please enter your e-mail."
+            type="email"
+            value={email}
+            name="email"
+            onChange={onChange}
+            required
+          />
 
-      <label>비밀번호 : </label>
-      <input
-        type="password"
-        value={password}
-        name="password"
-        onChange={onChange}
-        required
-      />
+          <h5>PASSWORD</h5>
+          <input
+            style={{
+              fontSize: "17px",
+              textAlign: "center",
+            }}
+            placeholder="Please enter your password."
+            type="password"
+            value={password}
+            name="password"
+            onChange={onChange}
+            required
+          />
 
-      <div>
-        <label>비밀번호 재확인: </label>
-        <input
-          type="password"
-          value={passwordCheck}
-          name="passwordCheck"
-          onChange={onChange}
-          required
-        />
-        {passwordError && (
-          <div style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</div>
-        )}
-        {passwordCheck === password && password !== "" && !passwordError && (
-          <div style={{ color: "green" }}>비밀번호가 일치합니다.</div>
-        )}
-      </div>
+          <h5>Recheck password</h5>
+          <input
+            style={{
+              fontSize: "17px",
+              textAlign: "center",
+            }}
+            placeholder="Please enter the same password."
+            type="password"
+            value={passwordCheck}
+            name="passwordCheck"
+            onChange={onChange}
+            required
+          />
+          <Erm>
+            {passwordError && (
+              <div style={{ color: "red" }}> Password is incorrect.</div>
+            )}
+            {passwordCheck === password &&
+              password !== "" &&
+              !passwordError && (
+                <div style={{ color: "green" }}>Password is corrrect.</div>
+              )}
+          </Erm>
 
-      <button onClick={signUp}>회원가입</button>
+          <But>
+            <button onClick={signUp}>Signup</button>
+          </But>
+        </Second>
+      </All>
     </>
   );
 }

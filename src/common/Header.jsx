@@ -3,6 +3,48 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
+import styled from "styled-components";
+import homelogo from "../homelogo.png";
+
+// 스타일
+const HeaderWrapper = styled.div`
+  color: white;
+  width: 100%;
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  height: 7vh;
+  background-color: #7895cb;
+  font-family: "Rubik", sans-serif;
+`;
+const D = styled.div`
+  font-size: 20px;
+`;
+
+const Links = styled.div`
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 15px;
+  cursor: pointer;
+  a {
+    color: white;
+    text-decoration: none; /* 링크의 밑줄 제거 */
+  }
+`;
+
+const Logo = styled.div`
+  img {
+    width: 80px;
+    height: auto;
+  }
+
+  margin-top: 5px;
+`;
 
 function Header() {
   const navigate = useNavigate();
@@ -18,27 +60,34 @@ function Header() {
   const year = date.getFullYear();
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
   const day = ("0" + date.getDate()).slice(-2);
-  const dateStr = `${year}-${month}-${day}`;
+  const dateStr = `Today ${year}.${month}.${day}`;
   // 어떤 날짜여도 'YYYY-DD-YY'형식으로 변환!
 
   return (
     <>
-      <div>{dateStr}</div>
+      <HeaderWrapper>
+        <D>
+          <p>{dateStr}</p>
+        </D>
+        <Logo>
+          <Link to="/main">
+            <img src={homelogo} />
+          </Link>
+        </Logo>
 
-      {/* 유저가 있을 때 ? 로그아웃 부분 보여주기 : 로그인 부분 보여주기 */}
-      {user ? (
-        <>
-          <button onClick={logOut}>로그아웃</button>
-          <br />
-          <Link to="/mypage">마이페이지</Link>
-        </>
-      ) : (
-        <>
-          <Link to="/login">로그인</Link>
-          <br />
-          <Link to="/signup">회원가입</Link>
-        </>
-      )}
+        <Links>
+          {user ? (
+            <>
+              <p onClick={logOut}>Logout</p>
+            </>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Signup</Link>
+            </>
+          )}
+        </Links>
+      </HeaderWrapper>
     </>
   );
 }
