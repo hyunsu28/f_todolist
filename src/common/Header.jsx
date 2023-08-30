@@ -62,7 +62,14 @@ function Header() {
   const day = ("0" + date.getDate()).slice(-2);
   const dateStr = `Today ${year}.${month}.${day}`;
   // 어떤 날짜여도 'YYYY-DD-YY'형식으로 변환!
-
+  const handleEnter = () => {
+    if (user) {
+      navigate("/main ");
+    } else {
+      alert("Login is required");
+      navigate("/login");
+    }
+  };
   return (
     <>
       <HeaderWrapper>
@@ -70,9 +77,7 @@ function Header() {
           <p>{dateStr}</p>
         </D>
         <Logo>
-          <Link to="/main">
-            <img src={homelogo} />
-          </Link>
+          <img src={homelogo} onClick={handleEnter} />
         </Logo>
 
         <Links>
